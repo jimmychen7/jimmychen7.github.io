@@ -1,5 +1,7 @@
 ## Welcome to GitHub Pages
 
+[View Resume](https://docs.google.com/document/d/1w2TW0f2vS3yMgBghD-7vSqtgGJhoCJFTNWtiL78obAA/edit?usp=sharing)
+
 You can use the [editor on GitHub](https://github.com/jimmychen7/jimmychen7.github.io/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
 
 Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
