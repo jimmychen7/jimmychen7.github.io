@@ -22,7 +22,7 @@
             <div class="inner">
               <h3 class="masthead-brand">Jimmy Chen</h3>
               <nav class="nav nav-masthead">
-                <a class="nav-link active" href="#">Home</a>
+                <a class="nav-link active" href="https://jimmychen7.github.io">Home</a>
                 <a class="nav-link" href="projects.html">Projects</a>
                 <a class="nav-link" target="_blank" href="content/JimmyChenCV.pdf">Resume</a>
               </nav>
