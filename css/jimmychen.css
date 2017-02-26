@@ -210,8 +210,7 @@ nav ul li {
   transition: color 300ms ease-out;
 
   background-color: #FFF;
-  -webkit-transition: background-color 300ms ease-in-out;
-  transition: background-color 300ms ease-in-out;
+
 }
 
 .social a:hover, .social a:hover div{
