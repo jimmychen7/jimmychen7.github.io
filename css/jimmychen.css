@@ -207,8 +207,6 @@ nav ul li {
   padding: 8px;
   border-radius: 6px;
   -webkit-transition: color 300ms ease-in-out;
-  transition: color 300ms ease-out;
-
   background-color: #FFF;
 
 }
