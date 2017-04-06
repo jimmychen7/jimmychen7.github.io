@@ -168,6 +168,7 @@ body {
 
 
 /*adrianblan*/
+
 body {
   font-size: 20px;
   font-family: "Roboto", "Helvetica Neue", "Helvetica", "Arial", "sans-serif";
@@ -181,10 +182,6 @@ body {
 
 .btn i.zmdi{
   margin-right: 3px;
-}
-
-i.fa, a, a:hover {
-  color: #F33446;
 }
 
 nav ul li {
@@ -208,6 +205,7 @@ nav ul li {
   border-radius: 6px;
   -webkit-transition: color 300ms ease-in-out;
   background-color: #FFF;
+  color: #F33446;
 
 }
 
@@ -215,7 +213,6 @@ nav ul li {
   text-decoration: none;
   background-color: #F33446;
   color: #FFF;
-  -webkit-transition: color 300ms ease-in-out;
   transition: color 300ms ease-in-out;
 }
 
