@@ -1,44 +1,53 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Jimmy Chen</title>
-  <link rel="icon" href="img/source-code.png"type="image/png">
-  <link href='https://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
-  <link href='https://fonts.googleapis.com/css?family=Monoton' rel='stylesheet' type='text/css'>
-  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css'>
+  <link rel="icon" href="img/source-code.png" type="image/png">
+
+  <!-- Sophisticated Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;800&display=swap"
+    rel="stylesheet">
+
+  <!-- Custom Styles -->
   <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
-  <div id="particles-js">
-      <div class="row">
-          <div class="u-full-width column cta">
-              <div class="LI-profile-badge"  data-version="v1" data-size="large" data-locale="en_US" data-type="vertical" data-theme="dark" data-vanity="jimmychen07"><a class="LI-simple-link" href='https://au.linkedin.com/in/jimmychen07?trk=profile-badge'>Jimmy Chen</a></div>
-              <ul class="footerLinks">
-                <li>
-                  <a href="https://docs.google.com/document/d/1w2TW0f2vS3yMgBghD-7vSqtgGJhoCJFTNWtiL78obAA/edit?usp=sharing" target="_blank">Resume</a>
-                </li>
-                <li>
-                  <a href="mailto:jimmy_chen_7@hotmail.com">Contact</a>
-                </li>
-              </ul>
-              <div class="footer">
-                  <p>Made using the awesome
-                      <a href="https://github.com/VincentGarreau/particles.js/" target="_blank">Particles.js</a> &amp;
-                      <a href="http://getskeleton.com/" target="_blank">Skeleton.css</a>
-                  </p>
-              </div>
-              
-          </div>
-      </div>
-    </div>
+  <!-- Dynamic Ambient Background -->
+  <div class="ambient-bg">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
   </div>
 
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js'></script>
+  <main class="main-content">
+    <section class="profile-card">
+      <div class="badge-wrapper">
+        <div class="badge-base LI-profile-badge" data-locale="en_US" data-size="large" data-theme="dark"
+          data-type="HORIZONTAL" data-vanity="jimmychen07" data-version="v1"><a class="badge-base__link LI-simple-link"
+            href="https://au.linkedin.com/in/jimmychen07?trk=profile-badge"></a></div>
+      </div>
+
+      <div class="cta-group">
+        <a href="https://docs.google.com/document/d/1w2TW0f2vS3yMgBghD-7vSqtgGJhoCJFTNWtiL78obAA/edit?usp=sharing"
+          target="_blank" class="btn-modern btn-primary">
+          View Resume
+        </a>
+        <a href="mailto:jimmy_chen_7@hotmail.com" class="btn-modern btn-secondary">
+          Get in Touch
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Essential Scripts -->
   <script type="text/javascript" src="https://platform.linkedin.com/badges/js/profile.js" async defer></script>
-  <script  src="js/index.js"></script>
 </body>
+
 </html>
