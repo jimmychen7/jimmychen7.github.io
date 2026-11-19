@@ -1,255 +1,515 @@
-:root {
-  --color-bg: #000000;
-  --color-accent: #ffffff;
-  /* Deep, Muted Liquid Mesh Colors */
-  --liquid-1: #0a1128;
-  /* Deep Midnight Blue */
-  --liquid-2: #140a28;
-  /* Deep Midnight Purple */
-  --liquid-3: #1a0a14;
-  /* Deep Burgundy */
-  --liquid-4: #0a1a1a;
-  /* Dark Forest/Charcoal */
+/*
+ * jmychn.com — one stylesheet, no build step.
+ *
+ * Support target: Baseline Widely Available (cascade layers, nesting,
+ * light-dark(), oklch(), :has(), dvh). Layers are listed lowest to highest
+ * priority, so `preferences` (user settings) always wins.
+ */
 
-  --glass-bg: rgba(255, 255, 255, 0.015);
-  /* Even more subtle */
-  --glass-border: rgba(255, 255, 255, 0.05);
-  --glass-blur: 80px;
-  /* Higher blur for more sophisticated blending */
-  --font-main: 'Inter', system-ui, -apple-system, sans-serif;
+@layer reset, tokens, base, components, motion, preferences;
 
-  /* Sizing */
-  --badge-width: 100%;
-  --card-padding: 40px;
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/fonts/inter-latin-var.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
+    U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122,
+    U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+/* ---------------------------------------------------------------- reset */
 
-body {
-  background-color: var(--color-bg);
-  color: #fff;
-  font-family: var(--font-main);
-  min-height: 100vh;
-  width: 100vw;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  -webkit-font-smoothing: antialiased;
-  padding: 20px;
-}
-
-/* --- Apple Liquid Mesh Background --- */
-.ambient-bg {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  background: black;
-  filter: blur(80px);
-  /* Smooth out the gradients */
-  opacity: 0.6;
-}
-
-.ambient-bg::before,
-.ambient-bg::after,
-.orb {
-  content: '';
-  position: absolute;
-  width: 100vw;
-  height: 100vh;
-  border-radius: 50%;
-  animation: liquidMove 20s ease-in-out infinite alternate;
-}
-
-.ambient-bg::before {
-  background: radial-gradient(circle at 20% 30%, var(--liquid-1), transparent 50%);
-  animation-duration: 25s;
-}
-
-.ambient-bg::after {
-  background: radial-gradient(circle at 80% 70%, var(--liquid-2), transparent 50%);
-  animation-duration: 30s;
-  animation-delay: -5s;
-}
-
-.orb-1 {
-  background: radial-gradient(circle at 70% 20%, var(--liquid-3), transparent 50%);
-  animation-duration: 22s;
-  animation-delay: -10s;
-}
-
-.orb-2 {
-  background: radial-gradient(circle at 30% 80%, var(--liquid-4), transparent 50%);
-  animation-duration: 28s;
-  animation-delay: -15s;
-}
-
-@keyframes liquidMove {
-  0% {
-    transform: translate(0, 0) scale(1) rotate(0deg);
+@layer reset {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
   }
 
-  50% {
-    transform: translate(5%, 10%) scale(1.1) rotate(5deg);
+  * {
+    margin: 0;
   }
 
-  100% {
-    transform: translate(-5%, -5%) scale(1) rotate(-5deg);
+  html {
+    -webkit-text-size-adjust: none;
+    text-size-adjust: none;
+  }
+
+  ul[role="list"] {
+    padding: 0;
+    list-style: none;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  svg {
+    display: block;
+    flex: none;
   }
 }
 
-/* --- Proportional Card Layout --- */
-.main-content {
-  width: 100%;
-  max-width: 700px;
-  padding: 20px;
-}
+/* --------------------------------------------------------------- tokens */
 
-.profile-card {
-  background: var(--glass-bg);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  border: 1px solid var(--glass-border);
-  border-radius: 44px;
-  padding: 56px 40px;
-  position: relative;
-  box-shadow:
-    0 40px 80px -15px rgba(0, 0, 0, 0.6),
-    inset 0 1px 1px rgba(255, 255, 255, 0.1);
-  /* Specular Top Highlight */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  animation: cardReveal 1.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
+@layer tokens {
+  :root {
+    /* Dark is the designed default; light follows the visitor's system. */
+    color-scheme: dark light;
 
-/* Silky noise texture */
-.profile-card::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-  opacity: 0.015;
-  pointer-events: none;
-  border-radius: inherit;
-}
+    --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+      Roboto, sans-serif;
 
-@keyframes cardReveal {
-  from {
-    opacity: 0;
-    transform: translateY(30px) scale(0.96);
-  }
+    /* Every colour is light-dark(<light>, <dark>). */
+    --bg: light-dark(oklch(97.5% 0.006 270), oklch(0% 0 0));
+    --surface-solid: light-dark(oklch(100% 0 0), oklch(16% 0.012 270));
+    --text: light-dark(oklch(21% 0.02 270), oklch(98% 0.003 270));
+    --text-muted: light-dark(oklch(44% 0.02 270), oklch(74% 0.012 270));
+    --text-inverse: light-dark(oklch(99% 0 0), oklch(15% 0.012 270));
 
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
+    --glass: light-dark(oklch(100% 0 0 / 0.55), oklch(100% 0 0 / 0.03));
+    --glass-raised: light-dark(oklch(100% 0 0 / 0.7), oklch(100% 0 0 / 0.05));
+    --glass-hover: light-dark(oklch(100% 0 0 / 0.95), oklch(100% 0 0 / 0.1));
+    --hairline: light-dark(oklch(21% 0.02 270 / 0.1), oklch(100% 0 0 / 0.08));
+    --hairline-strong: light-dark(oklch(21% 0.02 270 / 0.24), oklch(100% 0 0 / 0.22));
+    --highlight: light-dark(oklch(100% 0 0 / 0.9), oklch(100% 0 0 / 0.1));
+    --shadow: light-dark(oklch(45% 0.06 270 / 0.2), oklch(0% 0 0 / 0.6));
+    --focus: light-dark(oklch(50% 0.2 265), oklch(82% 0.12 250));
+
+    /* Ambient mesh: deep and muted in the dark, soft pastels in the light. */
+    --mesh-1: light-dark(oklch(87% 0.07 262), oklch(20% 0.07 265));
+    --mesh-2: light-dark(oklch(87% 0.07 300), oklch(18% 0.075 300));
+    --mesh-3: light-dark(oklch(89% 0.06 10), oklch(17% 0.055 5));
+    --mesh-4: light-dark(oklch(89% 0.05 195), oklch(18% 0.035 195));
+    --grain-opacity: 0.04;
+
+    --radius-card: clamp(1.75rem, 1rem + 4vw, 2.75rem);
+    --radius-control: 1.125rem;
+    --space-card: clamp(1.5rem, 0.75rem + 5vw, 2.75rem);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   }
 }
 
-/* --- Centered Badge --- */
-.badge-wrapper {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  margin-bottom: 48px;
-  min-height: 100px;
-  /* Resetting everything for invisible wrapper */
-  border: none !important;
-  background: transparent !important;
-  box-shadow: none !important;
-  overflow: visible;
-}
+/* ----------------------------------------------------------------- base */
 
-/* LinkedIn Integration */
-.LI-profile-badge {
-  border-radius: 20px !important;
-  box-shadow: none !important;
-  /* Removed shadow per user request for invisibility */
-  transition: transform 0.3s ease;
-  background: transparent !important;
-}
-
-.LI-profile-badge:hover {
-  transform: translateY(-4px);
-}
-
-/* --- Proportional Modern Buttons --- */
-.cta-group {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  width: var(--badge-width);
-}
-
-.btn-modern {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 56px;
-  width: 100%;
-  border-radius: 20px;
-  text-decoration: none;
-  font-size: 15px;
-  font-weight: 500;
-  letter-spacing: -0.01em;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-
-  /* Liquid Glass Styles */
-  background: var(--glass-bg);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  border: 1px solid var(--glass-border);
-  color: #ffffff;
-  position: relative;
-  overflow: hidden;
-}
-
-/* Glass specular highlight for buttons */
-.btn-modern::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), transparent);
-  pointer-events: none;
-}
-
-.btn-modern:hover {
-  transform: scale(1.02);
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.2);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-}
-
-.btn-primary {
-  /* Emphasize primary button with a slightly stronger border or glow */
-  border-color: rgba(255, 255, 255, 0.15);
-}
-
-.btn-secondary {
-  opacity: 0.8;
-}
-
-.btn-secondary:hover {
-  opacity: 1;
-}
-
-/* --- Mobile Responsiveness --- */
-@media (max-width: 480px) {
-  .profile-card {
-    padding: 40px 20px;
-    border-radius: 32px;
-    width: 100%;
+@layer base {
+  body {
+    display: grid;
+    place-items: center;
+    min-block-size: 100vh;
+    min-block-size: 100dvh;
+    padding-block: max(1.25rem, env(safe-area-inset-top))
+      max(1.25rem, env(safe-area-inset-bottom));
+    padding-inline: max(1.25rem, env(safe-area-inset-left))
+      max(1.25rem, env(safe-area-inset-right));
+    overflow-x: clip;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
-  .cta-group {
-    width: 100%;
-    /* Full width on mobile */
+  main {
+    inline-size: min(100%, 30rem);
   }
 
-  .badge-wrapper {
-    margin-bottom: 24px;
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 3px;
+  }
+
+  .visually-hidden {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
+/* ----------------------------------------------------------- components */
+
+@layer components {
+  /* Ambient background: four soft blobs that drift on the compositor. */
+  .ambient {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: clip;
+    pointer-events: none;
+
+    & span {
+      position: absolute;
+      inset-block-start: var(--y);
+      inset-inline-start: var(--x);
+      inline-size: 95vmax;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: radial-gradient(closest-side in oklab, var(--mesh), transparent);
+      translate: -50% -50%;
+    }
+
+    & span:nth-child(1) { --mesh: var(--mesh-1); --x: 20%; --y: 30%; --drift: 25s; --offset: 0s; }
+    & span:nth-child(2) { --mesh: var(--mesh-2); --x: 80%; --y: 70%; --drift: 30s; --offset: -5s; }
+    & span:nth-child(3) { --mesh: var(--mesh-3); --x: 70%; --y: 20%; --drift: 22s; --offset: -10s; }
+    & span:nth-child(4) { --mesh: var(--mesh-4); --x: 30%; --y: 80%; --drift: 28s; --offset: -15s; }
+
+    /* Film grain: dithers the gradients so they don't band. */
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      opacity: var(--grain-opacity);
+    }
+  }
+
+  /* Card: the single glass surface everything sits on. */
+  .card {
+    display: grid;
+    gap: clamp(1.5rem, 1rem + 2vw, 2.25rem);
+    padding: var(--space-card);
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-card);
+    background: var(--glass);
+    -webkit-backdrop-filter: blur(40px) saturate(130%);
+    backdrop-filter: blur(40px) saturate(130%);
+    box-shadow:
+      0 2.5rem 5rem -1rem var(--shadow),
+      inset 0 1px 0 var(--highlight);
+  }
+
+  /*
+   * Identity: who this page is about.
+   *
+   * The LinkedIn badge is a progressive enhancement. It is loaded by a
+   * third-party script that content blockers often stop, so the native
+   * fallback (monogram, name, profile link) is what's in the HTML. The
+   * fallback holds back briefly to give the badge a chance to arrive, and
+   * shows straight away if the script fails or scripting is off.
+   */
+  .identity {
+    display: grid;
+    align-content: center;
+    justify-items: center;
+    min-block-size: 10rem;
+  }
+
+  .identity__fallback {
+    display: grid;
+    justify-items: center;
+    gap: 0.875rem;
+    text-align: center;
+    animation: fade-in 0.6s 1.5s both;
+
+    .badge-unavailable & {
+      animation: none;
+    }
+
+    @media (scripting: none) {
+      animation: none;
+    }
+  }
+
+  .identity__name {
+    font-size: clamp(1.75rem, 1.4rem + 1.6vw, 2.25rem);
+    font-weight: 650;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+  }
+
+  .identity__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    /* Padding grows the tap target; the negative margin keeps the rhythm. */
+    margin-block: -0.6875rem;
+    padding: 0.6875rem 0.625rem;
+    border-radius: 0.625rem;
+    color: var(--text-muted);
+    font-size: 0.9375rem;
+    text-decoration: underline;
+    text-decoration-color: var(--hairline-strong);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.25em;
+    transition: color 0.2s, text-decoration-color 0.2s;
+
+    & svg {
+      inline-size: 0.875rem;
+      block-size: 0.875rem;
+    }
+
+    @media (hover: hover) {
+      &:hover {
+        color: var(--text);
+        text-decoration-color: currentColor;
+      }
+    }
+  }
+
+  .avatar {
+    display: grid;
+    place-items: center;
+    inline-size: 4.5rem;
+    aspect-ratio: 1;
+    border: 1px solid var(--hairline-strong);
+    border-radius: 50%;
+    background: linear-gradient(135deg in oklab, var(--glass-hover), var(--glass));
+    box-shadow: inset 0 1px 0 var(--highlight);
+    font-size: 1.375rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    user-select: none;
+  }
+
+  /* LinkedIn's injected markup brings its own chrome; keep it invisible. */
+  .LI-profile-badge {
+    max-inline-size: 100%;
+    border-radius: 1.25rem !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    transition: translate 0.3s var(--ease-out);
+
+    & iframe {
+      max-inline-size: 100%;
+      border-radius: 1.25rem;
+    }
+
+    @media (hover: hover) {
+      &:hover {
+        translate: 0 -0.25rem;
+      }
+    }
+  }
+
+  /* Once the badge has rendered it replaces the fallback. The name stays in
+     the accessibility tree as the page's <h1>. */
+  .identity:has(
+      .LI-profile-badge[data-rendered],
+      .LI-profile-badge iframe,
+      .LI-profile-badge > :not(.LI-simple-link)
+    ) {
+    min-block-size: 0;
+
+    & .identity__fallback {
+      gap: 0;
+      animation: none;
+    }
+
+    & .avatar,
+    & .identity__link {
+      display: none;
+    }
+
+    & .identity__name {
+      position: absolute;
+      inline-size: 1px;
+      block-size: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+  }
+
+  /* Actions: a short stack of full-width buttons. */
+  .actions {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.625rem;
+    min-block-size: 3.5rem;
+    padding: 0.75rem 1.25rem;
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-control);
+    background: var(--glass-raised);
+    color: var(--text);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    text-align: center;
+    text-decoration: none;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    transition:
+      background-color 0.3s var(--ease-out),
+      border-color 0.3s var(--ease-out),
+      box-shadow 0.3s var(--ease-out),
+      scale 0.3s var(--ease-out);
+
+    & svg {
+      inline-size: 1.125rem;
+      block-size: 1.125rem;
+    }
+
+    @media (hover: hover) {
+      &:hover {
+        border-color: var(--hairline-strong);
+        background: var(--glass-hover);
+        box-shadow: 0 0.625rem 1.875rem -0.5rem var(--shadow);
+        scale: 1.015;
+      }
+    }
+
+    &:active {
+      scale: 0.98;
+    }
+  }
+
+  .button--primary {
+    border-color: transparent;
+    background: var(--text);
+    color: var(--text-inverse);
+    font-weight: 600;
+
+    @media (hover: hover) {
+      &:hover {
+        border-color: transparent;
+        background: color-mix(in oklab, var(--text) 88%, var(--bg));
+      }
+    }
+  }
+
+  /* Message: heading + supporting line, used by the 404 page. */
+  .message {
+    display: grid;
+    gap: 0.5rem;
+    text-align: center;
+
+    & p {
+      color: var(--text-muted);
+      text-wrap: pretty;
+    }
+  }
+
+  .message__code {
+    color: var(--text-muted);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+}
+
+/* --------------------------------------------------------------- motion */
+
+@layer motion {
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+  }
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(1.5rem) scale(0.97);
+    }
+  }
+
+  @keyframes drift {
+    0% {
+      transform: translate(0, 0) scale(1);
+    }
+
+    50% {
+      transform: translate(5%, 10%) scale(1.1);
+    }
+
+    100% {
+      transform: translate(-5%, -5%) scale(1);
+    }
+  }
+
+  /* Movement is opt-in: it only runs when the visitor hasn't asked for less. */
+  @media (prefers-reduced-motion: no-preference) {
+    .card {
+      animation: rise 1.2s var(--ease-out) both;
+    }
+
+    .ambient span {
+      animation: drift var(--drift) ease-in-out var(--offset) infinite alternate;
+      will-change: transform;
+    }
+  }
+}
+
+/* ---------------------------------------------------------- preferences */
+
+@layer preferences {
+  @media (prefers-reduced-motion: reduce) {
+    .button,
+    .LI-profile-badge {
+      transition-property: background-color, border-color, box-shadow;
+    }
+  }
+
+  @media (prefers-reduced-transparency: reduce) {
+    .card {
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+      background: var(--surface-solid);
+    }
+  }
+
+  @media (prefers-contrast: more) {
+    :root {
+      --hairline: var(--hairline-strong);
+      --text-muted: var(--text);
+    }
+
+    .card {
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+      background: var(--surface-solid);
+    }
+  }
+
+  @media (forced-colors: active) {
+    .ambient {
+      display: none;
+    }
+
+    .card,
+    .avatar,
+    .button {
+      border-color: CanvasText;
+    }
+
+    .button--primary {
+      border-width: 2px;
+    }
+  }
+
+  @media print {
+    :root {
+      color-scheme: light;
+    }
+
+    .ambient {
+      display: none;
+    }
+
+    .card {
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+      box-shadow: none;
+      animation: none;
+    }
+
+    .identity__fallback {
+      animation: none;
+    }
   }
 }
